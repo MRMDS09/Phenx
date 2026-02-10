@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "hero_section": {
+      "type": "hello-world",
+      "settings": {
+        "heading": "Welcome to Phenex",
+        "subheading": "Your destination for premium e-commerce experiences. Explore our curated collections and elevate your lifestyle.",
+        "show_button": true,
+        "button_label": "Discover More",
+        "button_link": "/collections/all",
+        "background_type": "color",
+        "background_color": "#1a1a1a",
+        "accent_color": "#FFD700",
+        "text_alignment": "center",
+        "padding_top": 120,
+        "padding_bottom": 120
+      }
+    }
+  },
+  "order": [
+    "hero_section"
+  ]
+}
