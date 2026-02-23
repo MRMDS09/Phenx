@@ -1,0 +1,70 @@
+{%- comment -%}
+  Renders a featured collection section, displaying a grid of products.
+{%- endcomment -%}
+
+{{ 'featured-collection.css' | asset_url | stylesheet_tag }}
+
+<div class="featured-collection">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="featured-collection__title">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    {%- assign collection = collections[section.settings.collection] -%}
+    
+    <div class="featured-collection__grid">
+      {%- for product in collection.products limit: section.settings.products_to_show -%}
+        {%- render 'product-card', product: product, show_vendor: section.settings.show_vendor -%}
+      {%- else -%}
+        {%- for i in (1..section.settings.products_to_show) -%}
+          <div class="product-card-placeholder">
+            {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+            <div class="product-card__info">
+              <div class="product-card__title placeholder">Product Title</div>
+              <div class="product-card__price placeholder">Rp 999.999</div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "label": "Products to show",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}

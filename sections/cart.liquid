@@ -1,37 +1,89 @@
-{% comment %}
-  This section is used in the cart template to render /cart page with an
-  overview of the items in customer's cart.
+{%- comment -%}
+  Renders the main cart page with AJAX functionality.
+{%- endcomment -%}
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
-{% endcomment %}
+{{ 'cart-page.css' | asset_url | stylesheet_tag }}
 
-<h1>{{ 'cart.title' | t }}</h1>
+<div class="cart-page page-width" data-section-id="{{ section.id }}">
+  {% if cart.empty? %}
+    <div class="cart--empty-state">
+      <h1>Your cart is empty</h1>
+      <a href="{{ routes.all_products_collection_url }}" class="button">Continue shopping</a>
+    </div>
+  {% else %}
+    <h1 class="cart-page__title">Your Cart</h1>
+    
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="cart-form">
+      
+      <div class="cart-items">
+        <div class="cart-items__header">
+          <div class="cart-items__header-cell product">Product</div>
+          <div class="cart-items__header-cell quantity">Quantity</div>
+          <div class="cart-items__header-cell total">Total</div>
+        </div>
 
-<form action="{{ routes.cart_url }}" method="post">
-  <table>
-    {% for item in cart.items %}
-      <tr>
-        <td>
-          {% render 'image', image: item.image, url: item.url %}
-        </td>
-        <td>
-          <p>{{ item.product.title }}</p>
-          {{ 'cart.remove' | t | link_to: item.url_to_remove }}
-        </td>
-        <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+        {% for item in cart.items %}
+          <div class="cart-item" data-line-key="{{ item.key }}">
+            <div class="cart-item__product">
+              <a href="{{ item.url }}">
+                <img src="{{ item.image | image_url: width: 120 }}" alt="{{ item.image.alt | escape }}">
+              </a>
+              <div>
+                <a href="{{ item.url }}">{{ item.product.title }}</a>
+                {% unless item.product.has_only_default_variant %}
+                  <p>{{ item.variant.title }}</p>
+                {% endunless %}
+                <p>{{ item.original_price | money }}</p>
+                <a href="{{ item.url_to_remove }}" class="cart-item__remove">Remove</a>
+              </div>
+            </div>
+            <div class="cart-item__quantity">
+              <div class="quantity-selector">
+                <button type="button" class="quantity-selector__button minus">-</button>
+                <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" data-line-key="{{ item.key }}">
+                <button type="button" class="quantity-selector__button plus">+</button>
+              </div>
+            </div>
+            <div class="cart-item__total">
+              {{ item.final_line_price | money }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
-</form>
+      <div class="cart-footer">
+        {% if section.settings.show_cart_note %}
+          <div class="cart-note">
+            <label for="cart-note">Add a note to your order:</label>
+            <textarea name="note" id="cart-note">{{ cart.note }}</textarea>
+          </div>
+        {% endif %}
+        <div class="cart-summary">
+          <p class="cart-summary__subtotal">
+            Subtotal: <span data-cart-subtotal>{{ cart.total_price | money }}</span>
+          </p>
+          <p class="cart-summary__taxes">Taxes and shipping calculated at checkout</p>
+          <button type="submit" name="checkout" class="cart-summary__checkout-button">
+            Checkout
+          </button>
+        </div>
+      </div>
+    </form>
+  {% endif %}
+</div>
+
+<script src="{{ 'cart-page.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
-  "name": "t:general.cart",
-  "settings": []
+  "name": "Cart Page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_cart_note",
+      "label": "Show cart note",
+      "default": true
+    }
+  ]
 }
 {% endschema %}

@@ -1,0 +1,32 @@
+{%- comment -%}
+  Renders a product card.
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+  - show_vendor: {Boolean} Whether to show the vendor (optional)
+{%- endcomment -%}
+
+<div class="product-card">
+  <a href="{{ product.url | within: collection }}" class="product-card__image-link">
+    {%- if product.featured_image -%}
+      <img
+        src="{{ product.featured_image | image_url: width: 400 }}"
+        alt="{{ product.featured_image.alt | escape }}"
+        width="400"
+        height="{{ 400 | divided_by: product.featured_image.aspect_ratio | round }}"
+        loading="lazy"
+        class="product-card__image"
+      >
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </a>
+  <div class="product-card__info">
+    {%- if show_vendor and product.vendor != blank -%}
+      <div class="product-card__vendor">{{ product.vendor }}</div>
+    {%- endif -%}
+    <a href="{{ product.url | within: collection }}" class="product-card__title">{{ product.title }}</a>
+    <div class="product-card__price">
+      {%- render 'price', product: product -%}
+    </div>
+  </div>
+</div>

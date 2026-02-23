@@ -1,56 +1,134 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
+{%- comment -%}
+  Renders the site footer, including navigation and brand information,
+  using a block-based system.
+{%- endcomment -%}
+
+{{ 'footer.css' | asset_url | stylesheet_tag }}
+
+<footer class="site-footer">
+  <div class="footer-grid page-width">
+    {%- for block in section.blocks -%}
+      <div class="footer-grid__item" {{ block.shopify_attributes }}>
+        {%- case block.type -%}
+          {%- when 'link_list' -%}
+            <h3 class="footer-grid__item-title">{{ block.settings.heading | escape }}</h3>
+            <ul class="footer-links">
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- when 'brand_info' -%}
+            <div class="brand-info">
+              {%- if block.settings.show_logo -%}
+                <h3 class="footer-grid__item-title">{{ shop.name }}</h3>
+              {%- endif -%}
+              <p>{{ block.settings.brand_description }}</p>
+              <div class="social-icons">
+                {%- if block.settings.social_twitter != blank -%}
+                  <a href="{{ block.settings.social_twitter }}">Twitter</a>
+                {%- endif -%}
+                {%- if block.settings.social_facebook != blank -%}
+                  <a href="{{ block.settings.social_facebook }}">Facebook</a>
+                {%- endif -%}
+                {%- if block.settings.social_instagram != blank -%}
+                  <a href="{{ block.settings.social_instagram }}">Instagram</a>
+                {%- endif -%}
+              </div>
+            </div>
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
   </div>
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
-
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+  <div class="footer-bottom page-width">
+    <div class="footer-bottom__copyright">
+      &copy; {{ 'now' | date: '%Y' }}, {{ shop.name }} | {{ powered_by_link }}
+    </div>
+    {%- if section.settings.show_payment_icons -%}
+      <div class="footer-bottom__payment-icons">
+        {%- for type in shop.enabled_payment_types -%}
+          {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
   </div>
 </footer>
 
-{% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
-    gap: 1rem;
-  }
-{% endstylesheet %}
-
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "Footer",
+  "max_blocks": 4,
   "settings": [
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
-    },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
+      "label": "Show payment icons",
       "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Link List",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Quick Links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "brand_info",
+      "name": "Brand Information",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_logo",
+          "label": "Show brand name",
+          "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "brand_description",
+          "label": "Brand description",
+          "default": "A short sentence about your brand."
+        },
+        {
+          "type": "header",
+          "content": "Social Media"
+        },
+        {
+          "type": "url",
+          "id": "social_twitter",
+          "label": "Twitter URL"
+        },
+        {
+          "type": "url",
+          "id": "social_facebook",
+          "label": "Facebook URL"
+        },
+        {
+          "type": "url",
+          "id": "social_instagram",
+          "label": "Instagram URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        { "type": "link_list" },
+        { "type": "brand_info" }
+      ]
     }
   ]
 }

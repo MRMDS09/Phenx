@@ -1,0 +1,46 @@
+.page-container {
+  padding: 50px 0;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+}
+
+.page-content {
+  line-height: 1.6;
+}
+
+.page-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 8px;
+}
+
+.page-content h2 {
+  font-size: 2rem;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.page-content h3 {
+  font-size: 1.5rem;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.page-content ul,
+.page-content ol {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.page-content li {
+  margin-bottom: 5px;
+}

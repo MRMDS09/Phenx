@@ -17,7 +17,15 @@
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "empty": "Your cart is empty",
+    "continue_shopping": "Continue shopping",
+    "product": "Product",
+    "quantity": "Quantity",
+    "total": "Total",
+    "note_label": "Add a note to your order:",
+    "subtotal": "Subtotal",
+    "taxes_and_shipping": "Taxes and shipping calculated at checkout"
   },
   "customers": {
     "login": {
@@ -28,7 +36,9 @@
     }
   },
   "collections": {
-    "title": "Collections"
+    "title": "Collections",
+    "sort_by": "Sort by",
+    "empty": "No products found in this collection."
   },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
@@ -48,5 +58,37 @@
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "header": {
+    "search_open": "Open search",
+    "search_placeholder": "Search products",
+    "open_menu": "Open menu"
+  },
+  "products": {
+    "price_from": "From",
+    "add_to_cart": "Add to cart",
+    "sold_out": "Sold out",
+    "quantity": "Quantity",
+    "share": "Share"
+  },
+  "contact": {
+    "success": "Thank you for your message! We will get back to you as soon as possible.",
+    "error_intro": "Please correct the following errors:",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone number",
+    "message": "Message",
+    "send": "Send message"
+  },
+  "sections": {
+    "featured_collection": {
+      "title": "Featured collection",
+      "placeholder_title": "Product title",
+      "placeholder_price": "€99.99"
+    },
+    "featured_product": {
+      "title": "Featured product",
+      "no_product": "Please select a product in the theme editor."
+    }
   }
 }

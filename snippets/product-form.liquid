@@ -1,0 +1,56 @@
+{%- comment -%}
+  Renders the product form, including variant picker and add to cart button.
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+{%- endcomment -%}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="product-form">
+  {%- form 'product', product -%}
+    <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+    {%- unless product.has_only_default_variant -%}
+      <div class="product-form__variants">
+        {%- for option in product.options_with_values -%}
+          <div class="variant-picker">
+            <label class="variant-picker__label" for="option-{{ option.position }}">
+              {{ option.name }}
+            </label>
+            <select
+              id="option-{{ option.position }}"
+              name="options[{{ option.name | escape }}]"
+              class="variant-picker__select"
+            >
+              {%- for value in option.values -%}
+                <option
+                  value="{{ value | escape }}"
+                  {% if option.selected_value == value %}selected="selected"{% endif %}
+                >
+                  {{ value }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endunless -%}
+
+    <div class="product-form__quantity">
+      <label for="quantity">Quantity</label>
+      <input type="number" id="quantity" name="quantity" value="1" min="1">
+    </div>
+
+    <button
+      type="submit"
+      class="product-form__add-to-cart-button"
+      {% if current_variant.available == false %}disabled{% endif %}
+    >
+      {%- if current_variant.available -%}
+        Add to Cart
+      {%- else -%}
+        Sold Out
+      {%- endif -%}
+    </button>
+  {%- endform -%}
+</div>

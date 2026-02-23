@@ -1,52 +1,115 @@
-{% comment %}
-  This section is used in the product template to render product page with
-  media, content, and add-to-cart form.
+{%- comment -%}
+  Renders the main product section, including media gallery, product info,
+  and the add-to-cart form.
+{%- endcomment -%}
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
-{% endcomment %}
+{{ 'product-page.css' | asset_url | stylesheet_tag }}
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
+{%- assign product_form_id = "product-form-" | append: section.id -%}
+
+<div
+  class="product-page page-width"
+  data-section-id="{{ section.id }}"
+  data-media-position="{{ section.settings.media_position }}"
+>
+  <div class="product-page__grid">
+
+    <div class="product-page__media">
+      <div class="product-media-gallery">
+        <div class="product-media-gallery__main-image">
+          {%- if product.featured_media -%}
+            <img
+              src="{{ product.featured_media | image_url: width: 1024 }}"
+              alt="{{ product.featured_media.alt | escape }}"
+              width="1024"
+              height="{{ 1024 | divided_by: product.featured_media.aspect_ratio | round }}"
+              id="main-product-image-{{ section.id }}"
+            >
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        {%- if product.media.size > 1 -%}
+          <div class="product-media-gallery__thumbnails">
+            {%- for media in product.media -%}
+              <a
+                href="{{ media | image_url: width: 1024 }}"
+                class="thumbnail-link"
+                data-media-id="{{ media.id }}"
+              >
+                <img
+                  src="{{ media | image_url: width: 120 }}"
+                  alt="{{ media.alt | escape }}"
+                  width="120"
+                  height="{{ 120 | divided_by: media.aspect_ratio | round }}"
+                  class="thumbnail-image"
+                >
+              </a>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="product-page__info">
+      {% if section.settings.show_vendor %}
+        <p class="product-vendor">{{ product.vendor }}</p>
+      {% endif %}
+      <h1 class="product-title">{{ product.title }}</h1>
+      <div class="product-price">
+        {%- render 'price', product: product -%}
+      </div>
+      
+      {%- if product.description != blank -%}
+        <div class="product-description">{{ product.description }}</div>
+      {%- endif -%}
+
+      {%- render 'product-form', product: product -%}
+      
+      {% if section.settings.show_share_buttons %}
+        <div class="social-sharing">
+          <p>Share:</p>
+          <!-- Social sharing links would go here -->
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
 </div>
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
-
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
-
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
-        >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
-
-    <input type="text" name="quantity" min="1" value="1">
-
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
-</div>
+<script src="{{ 'product-page.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
-  "name": "t:general.product",
-  "settings": [],
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  }
+  "name": "Product Page",
+  "settings": [
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Media gallery position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share_buttons",
+      "label": "Show social sharing buttons",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Page"
+    }
+  ]
 }
 {% endschema %}

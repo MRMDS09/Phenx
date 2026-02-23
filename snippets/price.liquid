@@ -1,0 +1,19 @@
+{%- comment -%}
+  Renders a product's price.
+  Accepts:
+  - product: {Object} Product Liquid object (required)
+{%- endcomment -%}
+
+<span class="price
+  {%- if product.compare_at_price > product.price %} price--on-sale{% endif -%}
+  {%- if product.price_varies %} price--varies{% endif -%}"
+>
+  {%- if product.price_varies -%}
+    <span class="price__prefix">From</span>
+  {%- endif -%}
+  <span class="price__amount">{{ product.price | money }}</span>
+
+  {%- if product.compare_at_price > product.price -%}
+    <s class="price__compare-at">{{ product.compare_at_price | money }}</s>
+  {%- endif -%}
+</span>
