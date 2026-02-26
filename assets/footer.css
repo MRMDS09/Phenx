@@ -1,0 +1,87 @@
+.site-footer {
+  background-color: #f8f8f8;
+  padding: 50px 0 0;
+  margin-top: 50px;
+  border-top: 1px solid #eee;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  padding-bottom: 40px;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+.footer-grid__item-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #555;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.brand-info p {
+  color: #555;
+  line-height: 1.6;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.social-icons a {
+  color: #555;
+  text-decoration: none;
+}
+
+.footer-bottom {
+  border-top: 1px solid #eee;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.footer-bottom__payment-icons {
+  display: flex;
+  gap: 8px;
+}
+
+.payment-icon {
+  height: 24px;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

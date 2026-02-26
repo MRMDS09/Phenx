@@ -1,0 +1,131 @@
+:root {
+  --page-width: 1200px;
+  --icon-stroke-width: 1.5;
+}
+
+.header {
+  padding: 0 1rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--page-width);
+  margin: 0 auto;
+}
+
+.header a {
+  text-decoration: none;
+  color: var(--color-foreground);
+}
+
+.header__title a {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.header__nav {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.header__menu {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.header__icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header__icon {
+  position: relative;
+  display: inline-block;
+}
+
+.header__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background-color: #b87333;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+
+.header-search-toggle { display: inline-flex; align-items: center; gap: .5rem; }
+
+.header-search-button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 6px;
+  display: inline-flex;
+  align-items:center;
+}
+
+.header-search-form {
+  position: relative;
+}
+
+.header-search-input {
+  display: none;
+  max-width: 0;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: max-width 0.4s ease;
+}
+
+.header-search-input.visible {
+  display: inline-block;
+  max-width: 200px;
+}
+
+.header__mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header__nav {
+    order: 1; /* Change order to place toggle at the end */
+  }
+
+  .header__menu {
+    display: none;
+    position: absolute;
+    top: 5rem; /* Position below the header */
+    left: 0;
+    right: 0;
+    background-color: white;
+    flex-direction: column;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    z-index: 10;
+  }
+
+  .header__menu.active {
+    display: flex;
+  }
+
+  .header__mobile-toggle {
+    display: block;
+  }
+}

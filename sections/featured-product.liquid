@@ -1,0 +1,62 @@
+{%- comment -%}
+  Renders a featured product section with a two-column layout.
+{%- endcomment -%}
+
+{{ 'featured-product.css' | asset_url | stylesheet_tag }}
+
+<div class="featured-product page-width">
+  {%- assign product = section.settings.product -%}
+
+  {%- if product != blank -%}
+    <div class="featured-product__grid">
+      <div class="featured-product__media">
+        {%- if product.featured_media -%}
+          <img
+            src="{{ product.featured_media | image_url: width: 800 }}"
+            alt="{{ product.featured_media.alt | escape }}"
+            width="800"
+            height="{{ 800 | divided_by: product.featured_media.aspect_ratio | round }}"
+            loading="lazy"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      <div class="featured-product__info">
+        <h2 class="featured-product__title">{{ product.title | escape }}</h2>
+        <div class="featured-product__price">
+          {%- render 'price', product: product -%}
+        </div>
+        {%- if product.description != blank -%}
+          <div class="featured-product__description">
+            {{ product.description | truncatewords: 50 }}
+          </div>
+        {%- endif -%}
+
+        {%- render 'product-form', product: product -%}
+      </div>
+    </div>
+  {%- else -%}
+    <div class="featured-product__placeholder">
+      <p>Please select a product in the theme editor.</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Featured Product",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Product"
+    }
+  ]
+}
+{% endschema %}

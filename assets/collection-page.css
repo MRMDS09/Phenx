@@ -1,0 +1,87 @@
+.collection-page {
+  padding: 50px 0;
+}
+
+.collection-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.collection-header__image {
+  margin-bottom: 20px;
+  max-height: 400px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.collection-header__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-header__info h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.collection-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+}
+
+.collection-toolbar__sort {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.collection-toolbar__sort select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Mobile default */
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .collection-grid {
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .collection-grid {
+    grid-template-columns: repeat(var(--columns, 4), 1fr);
+  }
+}
+
+.pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination a, .pagination span {
+  padding: 8px 12px;
+  margin: 0 2px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination .current {
+  background-color: #b87333;
+  color: white;
+  border-color: #b87333;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
