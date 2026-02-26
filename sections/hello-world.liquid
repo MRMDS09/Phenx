@@ -1,29 +1,28 @@
 {% comment %}
   A configurable hero banner section with a title, subtitle, and call-to-action button.
-  assign bg_image = section.settings.header_image
-
-  {% endcomment %}
+{% endcomment %}
 
 {%- liquid
+  assign bg_image = section.settings.header_image
   assign logo_image = section.settings.logo
   assign hero_collection = section.settings.hero_collection
 
   if hero_collection
     assign hero_link = hero_collection.url
-  else
+  else 
     assign hero_link = routes.all_products_collection_url
   endif
 -%}
 <div
   class="phenex-hero"
-    style="background-image: url('{{ 'header_image.png' | asset_url }}');"
+    style="background-image: url({{ 'headerimg.png' | asset_url }});"
 >
   <div class="overlay"></div>
 
   <div class="hero-inner">
     <div class="hero-left">
         <img
-          src="{{ logo_image | image_url: width: 160 }}"
+          src="{{ 'logowhite.png' | asset_url }}"
           alt="{{ logo_image.alt | default: shop.name | escape }}"
           width="80"
           height="{{ 80 | divided_by: logo_image.aspect_ratio | round }}"
