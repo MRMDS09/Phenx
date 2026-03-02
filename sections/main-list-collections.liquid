@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<div class="page-width" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto;">
+  <h1 class="title" style="text-align: center; margin-bottom: 40px;">{{ section.settings.title | escape }}</h1>
+
+  <div
+    class="collection-list-grid"
+    style="display: grid; grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr); gap: 30px;"
+  >
+    {%- paginate collections by 24 -%}
+      {%- for collection in collections -%}
+        <div class="collection-list-item">
+          <a
+            href="{{ collection.url }}"
+            class="collection-card"
+            style="text-decoration: none; color: inherit; display: block;"
+          >
+            <div
+              class="collection-card__image-wrapper"
+              style="aspect-ratio: 1; overflow: hidden; background: #f4f4f4; border-radius: 8px; position: relative;"
+            >
+              {%- if collection.featured_image -%}
+                <img
+                  src="{{ collection.featured_image | image_url: width: 600 }}"
+                  alt="{{ collection.title | escape }}"
+                  loading="lazy"
+                  width="{{ collection.featured_image.width }}"
+                  height="{{ collection.featured_image.height }}"
+                  style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;"
+                  onmouseover="this.style.transform='scale(1.05)'"
+                  onmouseout="this.style.transform='scale(1)'"
+                >
+              {%- else -%}
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #eaeaea;">
+                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="collection-card__info" style="text-align: center; margin-top: 15px;">
+              <h3 class="collection-card__title" style="margin: 0; font-size: 1.2rem;">{{ collection.title }}</h3>
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+<style>
+  @media screen and (max-width: 768px) {
+    .collection-list-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 15px !important;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .collection-list-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "List collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Toutes les collections"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Colonnes sur ordinateur"
+    }
+  ]
+}
+{% endschema %}

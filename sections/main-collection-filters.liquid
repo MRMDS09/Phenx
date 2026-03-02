@@ -1,0 +1,190 @@
+{% comment %}
+  Affiche la grille des produits d'une collection avec un panneau de filtres.
+  Utilise le snippet 'image' pour les images.
+{% endcomment %}
+
+{{ 'section-main-collection-product-grid.css' | asset_url | stylesheet_tag }}
+
+<div class="collection-page">
+  <!-- En-tête avec Filtrer et compteur -->
+  <div class="collection-header">
+    <button class="filter-toggle" aria-expanded="false">
+      Filtrer
+      <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+        <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </button>
+    <span class="product-count">{{ collection.products_count }} produits</span>
+  </div>
+
+  <!-- Panneau de filtres (caché par défaut sur mobile) -->
+  <div class="filter-panel">
+    <div class="filter-group">
+      <h3>Disponibilité</h3>
+      <!-- à remplacer par les filtres dynamiques Shopify si besoin -->
+      <ul>
+        <li><label><input type="checkbox"> En stock</label></li>
+        <li><label><input type="checkbox"> En rupture</label></li>
+      </ul>
+    </div>
+    <div class="filter-group">
+      <h3>Taille</h3>
+      <ul class="size-list">
+        <li><label><input type="checkbox"> XS</label></li>
+        <li><label><input type="checkbox"> S</label></li>
+        <li><label><input type="checkbox"> M</label></li>
+        <li><label><input type="checkbox"> L</label></li>
+        <li><label><input type="checkbox"> XL</label></li>
+      </ul>
+    </div>
+    <div class="filter-group">
+      <h3>Prix</h3>
+      <ul>
+        <li><label><input type="checkbox"> 0–199 dh</label></li>
+        <li><label><input type="checkbox"> 200–399 dh</label></li>
+        <li><label><input type="checkbox"> 400+ dh</label></li>
+      </ul>
+    </div>
+    <div class="filter-group">
+      <h3>Couleur</h3>
+      <ul class="color-list">
+        <li><label><input type="checkbox"> Noir</label></li>
+        <li><label><input type="checkbox"> Blanc</label></li>
+        <li><label><input type="checkbox"> Rouge</label></li>
+        <li><label><input type="checkbox"> Bleu</label></li>
+        <li><label><input type="checkbox"> Vert</label></li>
+      </ul>
+    </div>
+    <div class="filter-actions">
+      <button class="clear-all">Effacer tout</button>
+    </div>
+    <!-- Pied de filtres (optionnel) -->
+    <div class="filter-footer">
+      <p>Cliquez <strong>baci</strong> ib9a iweslek l3adid</p>
+      <p>25 Mentions légales</p>
+    </div>
+  </div>
+
+  <!-- Grille des produits -->
+  <div class="product-grid">
+    {% for product in collection.products %}
+      <div class="product-card" data-product-id="{{ product.id }}">
+        <a href="{{ product.url }}" class="product-link">
+          <div class="product-image-wrapper">
+            {% if product.media.size > 0 %}
+              {% comment %}
+                Image principale : on utilise le snippet 'image' avec les dimensions souhaitées.
+                On lui passe également un crop 'center' pour un cadrage carré.
+              {% endcomment %}
+              {% render 'image',
+                class: 'product-image primary',
+                image: product.featured_image,
+                width: 600,
+                height: 600,
+                crop: 'center'
+              %}
+
+              {% comment %}
+                Image secondaire (si elle existe) pour l'effet hover.
+                On suppose que la deuxième image est la première image après la featured.
+              {% endcomment %}
+              {% if product.media.size > 1 and product.media[1].media_type == 'image' %}
+                {% render 'image',
+                  class: 'product-image secondary',
+                  image: product.media[1],
+                  width: 600,
+                  height: 600,
+                  crop: 'center'
+                %}
+              {% endif %}
+            {% else %}
+              <div class="product-image-placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
+            {% endif %}
+          </div>
+
+          <div class="product-info">
+            <h3 class="product-title">{{ product.title }}</h3>
+            <p class="product-price">{{ product.price | money_without_trailing_zeros }}</p>
+
+            {% comment %}
+              Affichage des couleurs disponibles (si l'option 'Couleur' existe).
+              On boucle sur les variantes et on collecte les valeurs uniques de l'option 'Color' ou 'Couleur'.
+            {% endcomment %}
+            {% assign color_values = '' %}
+            {% for option in product.options_with_values %}
+              {% if option.name == 'Color' or option.name == 'Couleur' %}
+                {% for value in option.values %}
+                  {% assign color_values = color_values | append: value | append: ',' %}
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+            {% assign color_array = color_values | split: ',' | uniq %}
+
+            {% if color_array.size > 0 %}
+              <div class="product-colors">
+                {% for color in color_array %}
+                  {% if color != blank %}
+                    <span class="color-swatch" style="background-color: {{ color | downcase | replace: ' ', '' }};" title="{{ color }}"></span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </a>
+      </div>
+    {% else %}
+      <p class="no-products">Aucun produit trouvé dans cette collection.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  // Simple toggle pour le panneau de filtres (mobile)
+  document.querySelector('.filter-toggle')?.addEventListener('click', function() {
+    const panel = document.querySelector('.filter-panel');
+    const expanded = this.getAttribute('aria-expanded') === 'true' ? false : true;
+    this.setAttribute('aria-expanded', expanded);
+    panel.classList.toggle('visible');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Grille avec filtres",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Paramètres d'affichage"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "label": "Produits par ligne (desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_mobile",
+      "label": "Produits par ligne (mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Afficher les filtres",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grille avec filtres"
+    }
+  ]
+}
+{% endschema %}
