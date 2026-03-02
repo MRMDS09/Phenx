@@ -102,3 +102,141 @@
   gap: 10px;
   align-items: center;
 }
+/* Gallery Container */
+.product-media-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Main Image Area */
+.product-media-gallery__main {
+  position: relative;
+  background: #f9f9f9;
+  border-radius: 20px; /* Rounded corners from your image */
+  overflow: hidden;
+  aspect-ratio: 1 / 1.2;
+}
+
+.main-image-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+/* Navigation Arrows */
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: 0.3s;
+}
+
+.gallery-nav:hover { background: #fff; scale: 1.1; }
+.gallery-nav.prev { left: 15px; }
+.gallery-nav.next { right: 15px; }
+.gallery-nav svg { width: 20px; height: 20px; color: #333; }
+
+/* Thumbnails Styling */
+.product-media-gallery__thumbnails {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+.thumbnail-item {
+  width: 80px;
+  height: 100px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+
+.thumbnail-item:hover, .thumbnail-item.is-active {
+  border-color: #000; /* Active border color */
+}
+
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Label Styling */
+.form__label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: block;
+  color: #222;
+}
+
+/* Color Swatch Container */
+.color-swatch-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+/* Hide actual radio button */
+.color-swatch-input {
+  display: none;
+}
+
+/* Circular Swatch Design */
+.color-swatch-label {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #e8e8e8;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+/* Active/Selected State (The border from XSHOP) */
+.color-swatch-input:checked + .color-swatch-label {
+  border: 2px solid #000;
+  transform: scale(1.1);
+}
+
+/* Size Swatches (Pill Shape) */
+.size-swatch-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.size-swatch-input { display: none; }
+
+.size-swatch-label {
+  padding: 8px 20px;
+  border: 1px solid #e8e8e8;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  background: #f9f9f9;
+  transition: 0.3s;
+}
+
+.size-swatch-input:checked + .size-swatch-label {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
