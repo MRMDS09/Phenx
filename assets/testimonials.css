@@ -1,0 +1,137 @@
+.testimonials {
+  padding: 50px 0;
+}
+
+.testimonials__title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.testimonials__container {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials__wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Slider mode */
+.testimonials__wrapper.swiper-wrapper {
+  display: flex;
+}
+
+.testimonials__item {
+  height: auto;
+}
+
+/* Carte de témoignage style WhatsApp */
+.testimonial-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.testimonial-card__bubble {
+  background-color: #e5f0ff;
+  border-radius: 18px 18px 18px 4px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  position: relative;
+  word-wrap: break-word;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.testimonial-card__bubble::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #e5f0ff;
+  border-bottom: 0;
+  border-left: 0;
+  transform: translateY(100%);
+}
+
+.testimonial-card__text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.testimonial-card__footer {
+  padding-left: 12px;
+}
+
+.testimonial-card__stars {
+  margin-bottom: 6px;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.star {
+  color: #ddd;
+}
+
+.star--filled {
+  color: #ffc107;
+}
+
+.testimonial-card__customer {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.testimonial-card__name {
+  font-weight: 600;
+  color: #333;
+}
+
+.testimonial-card__badge {
+  color: #888;
+  font-style: italic;
+}
+
+/* Empty message */
+.testimonials__empty-message {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+/* Swiper personnalisation */
+.testimonials .swiper-button-prev,
+.testimonials .swiper-button-next {
+  color: #333;
+  background: rgba(255, 255, 255, 0.8);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.testimonials .swiper-button-prev::after,
+.testimonials .swiper-button-next::after {
+  font-size: 1.2rem;
+}
+
+.testimonials .swiper-pagination-bullet-active {
+  background: #333;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .testimonials__wrapper {
+    grid-template-columns: 1fr;
+  }
+}

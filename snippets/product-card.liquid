@@ -10,7 +10,7 @@
     {%- if product.featured_image -%}
       <img
         src="{{ product.featured_image | image_url: width: 400 }}"
-        alt="{{ product.featured_image.alt | escape }}"
+        alt="{{ product.featured_image.alt | escape | default: product.title }}"
         width="400"
         height="{{ 400 | divided_by: product.featured_image.aspect_ratio | round }}"
         loading="lazy"

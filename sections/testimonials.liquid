@@ -1,0 +1,187 @@
+{%- comment -%}
+  Testimonials section with WhatsApp-style chat bubbles.
+  Displays customer reviews in a grid or slider.
+{%- endcomment -%}
+
+{{ 'testimonials.css' | asset_url | stylesheet_tag }}
+
+<div class="testimonials section-{{ section.id }}" data-section-id="{{ section.id }}">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="testimonials__title">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="testimonials__container {% if section.settings.layout == 'slider' %}testimonials__slider swiper{% endif %}">
+        <div class="testimonials__wrapper {% if section.settings.layout == 'slider' %}swiper-wrapper{% endif %}">
+          {% for block in section.blocks %}
+            <div class="testimonials__item {% if section.settings.layout == 'slider' %}swiper-slide{% endif %}" {{ block.shopify_attributes }}>
+              <div class="testimonial-card">
+                <div class="testimonial-card__bubble">
+                  <p class="testimonial-card__text">{{ block.settings.review_text | escape }}</p>
+                </div>
+                <div class="testimonial-card__footer">
+                  <div class="testimonial-card__stars">
+                    {% assign rating = block.settings.rating | times: 1 %}
+                    {% for i in (1..5) %}
+                      {% if i <= rating %}
+                        <span class="star star--filled" aria-hidden="true">★</span>
+                      {% else %}
+                        <span class="star" aria-hidden="true">☆</span>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <div class="testimonial-card__customer">
+                    <span class="testimonial-card__name">{{ block.settings.customer_name | escape }}</span>
+                    {% if block.settings.verified_buyer %}
+                      <span class="testimonial-card__badge">– {{ 'sections.testimonials.verified_buyer' | t }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        {% if section.settings.layout == 'slider' %}
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-prev" aria-label="{{ 'general.accessibility.previous' | t }}"></div>
+          <div class="swiper-button-next" aria-label="{{ 'general.accessibility.next' | t }}"></div>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="testimonials__empty-message">
+        <p>{{ 'sections.testimonials.empty_message' | t }}</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% if section.settings.layout == 'slider' and section.blocks.size > 0 %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+  <script>
+    (function() {
+      function initTestimonialsSliders() {
+        if (typeof Swiper === 'undefined') return;
+        document.querySelectorAll('.testimonials__slider:not([data-swiper-initialized])').forEach(function(el) {
+          el.setAttribute('data-swiper-initialized', 'true');
+          new Swiper(el, {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            navigation: {
+              nextEl: el.querySelector('.swiper-button-next'),
+              prevEl: el.querySelector('.swiper-button-prev'),
+            },
+            pagination: {
+              el: el.querySelector('.swiper-pagination'),
+              clickable: true,
+            },
+            breakpoints: {
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 }
+            }
+          });
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTestimonialsSliders);
+      } else {
+        initTestimonialsSliders();
+      }
+    })();
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Customer Say",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Customer Say!"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "slider", "label": "Slider" }
+      ],
+      "default": "grid"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review text",
+          "default": "A perfect product, it keeps you very warm without over heating. True to size, I couldn't be happier with the purchase... Thank you! 😊"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating (stars)",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer name",
+          "default": "Algistino Lionel"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified_buyer",
+          "label": "Show 'Verified Buyer' badge",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Say",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "A perfect product, it keeps you very warm without over heating. True to size, I couldn't be happier with the purchase... Thank you! 😊",
+            "rating": 5,
+            "customer_name": "Algistino Lionel",
+            "verified_buyer": true
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "Great to be able to order everything I needed from the comfort of my home and the delivery was extremely quick. Recommend... 😍",
+            "rating": 5,
+            "customer_name": "Siarhei Dzenisenka",
+            "verified_buyer": true
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "These are sooo pretty and very comfy. Perfect color as well. I love wearing these with a neutral top and Chelsea boots. Wicked cute... 😍",
+            "rating": 5,
+            "customer_name": "Sarah Bond",
+            "verified_buyer": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -12,7 +12,7 @@
     <span class="price__prefix">From</span>
   {%- endif -%}
   <span class="price__amount">{{ product.price | money }}</span>
-
+  
   {%- if product.compare_at_price > product.price -%}
     <s class="price__compare-at">{{ product.compare_at_price | money }}</s>
   {%- endif -%}

@@ -1,4 +1,10 @@
 {
+  "general": {
+    "accessibility": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
   "404": {
     "title": "404",
     "not_found": "Page not found.",
@@ -84,11 +90,21 @@
     "featured_collection": {
       "title": "Featured collection",
       "placeholder_title": "Product title",
-      "placeholder_price": "€99.99"
+      "placeholder_price": "€99.99",
+      "select_collection": "Please select a collection in the theme editor.",
+      "show_placeholders_label": "Show placeholders (preview when no collection or empty)"
     },
     "featured_product": {
       "title": "Featured product",
       "no_product": "Please select a product in the theme editor."
+    },
+    "testimonials": {
+      "verified_buyer": "Verified buyer",
+      "empty_message": "Please add testimonials in the theme editor."
+    },
+    "high_quality_items": {
+      "placeholder_title": "Item title {{ number }}",
+      "placeholder_description": "Item description. You can edit it in the theme editor."
     }
   }
 }

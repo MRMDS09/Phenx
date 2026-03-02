@@ -1,34 +1,299 @@
 {%- comment -%}
-  Renders a featured collection section, displaying a grid of products.
+  Renders a featured collection section, displaying a grid or slider of products.
 {%- endcomment -%}
 
 {{ 'featured-collection.css' | asset_url | stylesheet_tag }}
 
-<div class="featured-collection">
+<div class="featured-collection" data-section-id="{{ section.id }}">
   <div class="page-width">
     {% if section.settings.title != blank %}
       <h2 class="featured-collection__title">{{ section.settings.title | escape }}</h2>
     {% endif %}
 
     {%- assign collection = collections[section.settings.collection] -%}
-    
-    <div class="featured-collection__grid">
-      {%- for product in collection.products limit: section.settings.products_to_show -%}
-        {%- render 'product-card', product: product, show_vendor: section.settings.show_vendor -%}
+    {%- assign show_placeholders = section.settings.show_placeholders -%}
+    {%- assign layout = section.settings.layout -%}
+
+    <div class="featured-collection__container">
+      {%- if layout == 'grid' -%}
+        <div class="featured-collection__grid">
+          {%- if collection == blank -%}
+            {%- if show_placeholders == false -%}
+              <div class="featured-collection__empty-message">
+                <p>{{ 'sections.featured_collection.select_collection' | t }}</p>
+              </div>
+            {%- else -%}
+              {%- for i in (1..section.settings.products_to_show) -%}
+                <div class="product-card-placeholder">
+                  {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                  <div class="product-card__info">
+                    <div class="product-card__title placeholder">{{ 'sections.featured_collection.placeholder_title' | t }}</div>
+                    <div class="product-card__price placeholder">{{ 'sections.featured_collection.placeholder_price' | t }}</div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- else -%}
+            {%- for product in collection.products limit: section.settings.products_to_show -%}
+              {%- render 'product-card', product: product, show_vendor: section.settings.show_vendor -%}
+            {%- else -%}
+              {%- for i in (1..section.settings.products_to_show) -%}
+                <div class="product-card-placeholder">
+                  {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                  <div class="product-card__info">
+                    <div class="product-card__title placeholder">{{ 'sections.featured_collection.placeholder_title' | t }}</div>
+                    <div class="product-card__price placeholder">{{ 'sections.featured_collection.placeholder_price' | t }}</div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
       {%- else -%}
-        {%- for i in (1..section.settings.products_to_show) -%}
-          <div class="product-card-placeholder">
-            {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
-            <div class="product-card__info">
-              <div class="product-card__title placeholder">Product Title</div>
-              <div class="product-card__price placeholder">Rp 999.999</div>
+        {%- comment -%} Layout slider (Swiper) {%- endcomment -%}
+        {%- if collection == blank -%}
+          {%- if show_placeholders == false -%}
+            <div class="featured-collection__empty-message">
+              <p>{{ 'sections.featured_collection.select_collection' | t }}</p>
             </div>
+          {%- else -%}
+            <div class="featured-collection__slider swiper" data-section-id="{{ section.id }}">
+              <div class="swiper-wrapper">
+                {%- for i in (1..section.settings.products_to_show) -%}
+                  <div class="swiper-slide">
+                    <div class="product-card-placeholder">
+                      {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                      <div class="product-card__info">
+                        <div class="product-card__title placeholder">{{ 'sections.featured_collection.placeholder_title' | t }}</div>
+                        <div class="product-card__price placeholder">{{ 'sections.featured_collection.placeholder_price' | t }}</div>
+                      </div>
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-prev" aria-label="{{ 'general.accessibility.previous' | t }}"></div>
+              <div class="swiper-button-next" aria-label="{{ 'general.accessibility.next' | t }}"></div>
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          <div class="featured-collection__slider swiper" data-section-id="{{ section.id }}">
+            <div class="swiper-wrapper">
+              {%- for product in collection.products limit: section.settings.products_to_show -%}
+                <div class="swiper-slide">
+                  {%- render 'product-card', product: product, show_vendor: section.settings.show_vendor -%}
+                </div>
+              {%- else -%}
+                {%- for i in (1..section.settings.products_to_show) -%}
+                  <div class="swiper-slide">
+                    <div class="product-card-placeholder">
+                      {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                      <div class="product-card__info">
+                        <div class="product-card__title placeholder">{{ 'sections.featured_collection.placeholder_title' | t }}</div>
+                        <div class="product-card__price placeholder">{{ 'sections.featured_collection.placeholder_price' | t }}</div>
+                      </div>
+                    </div>
+                  </div>
+                {%- endfor -%}
+              {%- endfor -%}
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev" aria-label="{{ 'general.accessibility.previous' | t }}"></div>
+            <div class="swiper-button-next" aria-label="{{ 'general.accessibility.next' | t }}"></div>
           </div>
-        {%- endfor -%}
-      {%- endfor -%}
+        {%- endif -%}
+      {%- endif -%}
     </div>
   </div>
 </div>
+
+{% stylesheet %}
+/* Styles complets pour la section et les cartes produit */
+.featured-collection {
+  padding: 50px 0;
+}
+
+.featured-collection__title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.featured-collection__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.featured-collection__empty-message {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  color: #666;
+  font-size: 1.2rem;
+  grid-column: 1 / -1; /* occupe toute la largeur de la grille */
+}
+
+.product-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card__image-link {
+  display: block;
+  overflow: hidden;
+}
+
+.product-card__image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-card__image {
+  transform: scale(1.05);
+}
+
+.product-card__info {
+  padding: 15px;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-card__vendor {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.product-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.product-card__price {
+  font-size: 1.1rem;
+  color: #b87333;
+}
+
+.price--on-sale .price__amount {
+  color: #d00;
+  font-weight: bold;
+}
+
+.price__compare-at {
+  font-size: 0.9rem;
+  color: #888;
+  text-decoration: line-through;
+  margin-left: 10px;
+}
+
+/* Placeholder styles */
+.product-card-placeholder {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.product-card-placeholder .placeholder-svg {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  background-color: #f2f2f2;
+}
+
+.product-card-placeholder .placeholder {
+  background-color: #f2f2f2;
+  color: #f2f2f2;
+  border-radius: 4px;
+}
+
+/* Slider (Swiper) */
+.featured-collection__slider {
+  overflow: hidden;
+  padding: 10px 0;
+  position: relative;
+}
+
+.featured-collection__slider .swiper-slide {
+  height: auto;
+  box-sizing: border-box;
+}
+
+.featured-collection__slider .product-card,
+.featured-collection__slider .product-card-placeholder {
+  height: 100%;
+}
+
+.featured-collection__slider .swiper-button-prev,
+.featured-collection__slider .swiper-button-next {
+  color: #333;
+}
+
+.featured-collection__slider .swiper-button-prev::after,
+.featured-collection__slider .swiper-button-next::after {
+  font-size: 1.5rem;
+}
+
+.featured-collection__slider .swiper-pagination-bullet-active {
+  background: #333;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .featured-collection__grid {
+    grid-template-columns: 1fr; /* une seule colonne sur très petit écran */
+  }
+}
+{% endstylesheet %}
+
+{% if section.settings.layout == 'slider' %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+  <script>
+    (function() {
+      function initFeaturedCollectionSliders() {
+        if (typeof Swiper === 'undefined') return;
+        document.querySelectorAll('.featured-collection__slider:not([data-swiper-initialized])').forEach(function(el) {
+          el.setAttribute('data-swiper-initialized', 'true');
+          new Swiper(el, {
+            slidesPerView: 2,
+            spaceBetween: 20,
+            navigation: {
+              nextEl: el.querySelector('.swiper-button-next'),
+              prevEl: el.querySelector('.swiper-button-prev'),
+            },
+            pagination: {
+              el: el.querySelector('.swiper-pagination'),
+              clickable: true,
+            },
+            breakpoints: {
+              640: { slidesPerView: 3 },
+              1024: { slidesPerView: 4 }
+            }
+          });
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initFeaturedCollectionSliders);
+      } else {
+        initFeaturedCollectionSliders();
+      }
+    })();
+  </script>
+{% endif %}
 
 {% schema %}
 {
@@ -59,6 +324,23 @@
       "id": "show_vendor",
       "label": "Show vendor",
       "default": false
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "slider", "label": "Slider" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_placeholders",
+      "label": "Show placeholders (preview when no collection or empty)",
+      "default": false,
+      "info": "Use in local dev to see the layout with placeholder cards when no collection is selected or the collection has no products."
     }
   ],
   "presets": [

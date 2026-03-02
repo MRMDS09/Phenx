@@ -20,12 +20,6 @@
         "show_vendor": false
       }
     },
-    "featured_product_block": {
-      "type": "featured-product",
-      "settings": {
-        "product": ""
-      }
-    },
     "featured_collection_secondary": {
       "type": "featured-collection",
       "settings": {
@@ -34,12 +28,26 @@
         "products_to_show": 4,
         "show_vendor": false
       }
+    },
+    "testimonials_main": {
+      "type": "testimonials",
+      "settings": {
+        "title": "Customer Say!",
+        "layout": "grid"
+      }
+    },
+    "high_quality_items_main": {
+      "type": "high-quality-items",
+      "settings": {
+        "title": ""
+      }
     }
   },
   "order": [
     "hero_section",
     "featured_collection_main",
-    "featured_product_block",
-    "featured_collection_secondary"
+    "featured_collection_secondary",
+    "testimonials_main",
+    "high_quality_items_main"
   ]
 }
