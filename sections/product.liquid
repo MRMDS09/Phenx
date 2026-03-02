@@ -3,9 +3,25 @@
   and the add-to-cart form.
 {%- endcomment -%}
 
+{%- comment -%}
+  Renders the main product section, including media gallery, product info,
+  and the add-to-cart form.
+  Requires: product-page.css, product-page.js (assets)
+{%- endcomment -%}
 {{ 'product-page.css' | asset_url | stylesheet_tag }}
 
 {%- assign product_form_id = "product-form-" | append: section.id -%}
+
+{%- comment -%} Breadcrumb {%- endcomment -%}
+<nav class="breadcrumb page-width" aria-label="breadcrumb">
+  <a href="/">Home</a>
+  <span aria-hidden="true">›</span>
+  {%- if collection -%}
+    <a href="{{ collection.url }}">{{ collection.title }}</a>
+    <span aria-hidden="true">›</span>
+  {%- endif -%}
+  <span aria-current="page">{{ product.title }}</span>
+</nav>
 
 <div
   class="product-page page-width"
@@ -14,69 +30,189 @@
 >
   <div class="product-page__grid">
 
+    {%- comment -%} ── Media Gallery ── {%- endcomment -%}
     <div class="product-page__media">
-      <div class="product-media-gallery">
-        <div class="product-media-gallery__main-image">
-          {%- if product.featured_media -%}
-            <img
-              src="{{ product.featured_media | image_url: width: 1024 }}"
-              alt="{{ product.featured_media.alt | escape }}"
-              width="1024"
-              height="{{ 1024 | divided_by: product.featured_media.aspect_ratio | round }}"
-              id="main-product-image-{{ section.id }}"
-            >
-          {%- else -%}
-            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-          {%- endif -%}
-        </div>
-        {%- if product.media.size > 1 -%}
-          <div class="product-media-gallery__thumbnails">
-            {%- for media in product.media -%}
-              <a
-                href="{{ media | image_url: width: 1024 }}"
-                class="thumbnail-link"
-                data-media-id="{{ media.id }}"
-              >
-                <img
-                  src="{{ media | image_url: width: 120 }}"
-                  alt="{{ media.alt | escape }}"
-                  width="120"
-                  height="{{ 120 | divided_by: media.aspect_ratio | round }}"
-                  class="thumbnail-image"
-                >
-              </a>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-      </div>
-    </div>
+  <div class="product-media-gallery">
+    
+    {%- comment -%} Main Image with Navigation Arrows {%- endcomment -%}
+    <div class="product-media-gallery__main">
+      <button class="gallery-nav prev" aria-label="Previous image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
 
-    <div class="product-page__info">
-      {% if section.settings.show_vendor %}
-        <p class="product-vendor">{{ product.vendor }}</p>
-      {% endif %}
-      <h1 class="product-title">{{ product.title }}</h1>
-      <div class="product-price">
-        {%- render 'price', product: product -%}
-      </div>
-      
-      {%- if product.description != blank -%}
-        <div class="product-description">{{ product.description }}</div>
+      {%- if product.featured_media -%}
+        <img
+          src="{{ product.featured_media | image_url: width: 1024 }}"
+          alt="{{ product.featured_media.alt | escape }}"
+          id="main-product-image-{{ section.id }}"
+          width="{{ product.featured_media.width }}"
+          height="{{ product.featured_media.height }}"
+          class="main-image-element"
+          loading="eager">
       {%- endif -%}
 
-      {%- render 'product-form', product: product -%}
-      
-      {% if section.settings.show_share_buttons %}
-        <div class="social-sharing">
-          <p>Share:</p>
-          <!-- Social sharing links would go here -->
-        </div>
-      {% endif %}
+      <button class="gallery-nav next" aria-label="Next image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
     </div>
+
+    {%- comment -%} Horizontal Thumbnails Below {%- endcomment -%}
+    {%- if product.media.size > 1 -%}
+      <div class="product-media-gallery__thumbnails">
+        {%- for media in product.media -%}
+          <div class="thumbnail-item {% if forloop.first %}is-active{% endif %}" data-media-id="{{ media.id }}">
+            <img
+              src="{{ media | image_url: width: 150 }}"
+              alt="{{ media.alt | escape }}"
+              width="150"
+              height="150"
+              class="thumbnail-image"
+              loading="lazy"
+              onclick="document.getElementById('main-product-image-{{ section.id }}').src='{{ media | image_url: width: 1024 }}'"
+            >
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
 
   </div>
 </div>
 
+    {%- comment -%} ── Product Info ── {%- endcomment -%}
+<div class="product-page__info">
+  
+  {%- if section.settings.show_vendor and product.vendor != blank -%}
+    <p class="product-vendor-label">{{ product.vendor | capitalize }}</p>
+  {%- endif -%}
+
+  <h1 class="product-title-display">{{ product.title | upcase }}</h1>
+
+  {%- comment -%} Star Rating Placeholder {%- endcomment -%}
+  <div class="product-rating-row">
+    <span class="stars">★★★★☆</span>
+    <span class="rating-text">4.5/5</span>
+  </div>
+
+  <div class="product-price-custom">
+    {%- if product.compare_at_price > product.price -%}
+      <span class="price-main">{{ product.price | money }}</span>
+      <span class="price-old">{{ product.compare_at_price | money }}</span>
+      
+      {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+      <span class="price-badge">-{{ savings }}%</span>
+    {%- else -%}
+      <span class="price-main">{{ product.price | money }}</span>
+    {%- endif -%}
+  </div>
+
+  {%- if product.description != blank -%}
+    <div class="product-short-description">
+      {{ product.description | strip_html | truncatewords: 30 }}
+    </div>
+  {%- endif -%}
+  
+
+  
+  {%- comment -%} Product form (Swatches + Add to Cart) {%- endcomment -%}
+  <div class="product-form-container">
+    {%- render 'product-form', product: product, product_form_id: product_form_id -%}
+  </div>
+
+  {%- comment -%} Umino-style Pre-order Badge (if applicable) {%- endcomment -%}
+  {% if product.available == false %}
+     <div class="preorder-tag">Pre-order</div>
+  {% endif %}
+
+      {%- comment -%} Trust Badges {%- endcomment -%}
+      <div class="product-trust">
+        <div class="trust-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Secure checkout</span>
+        </div>
+        <div class="trust-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <span>Free shipping over $100</span>
+        </div>
+        <div class="trust-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          <span>30-day returns</span>
+        </div>
+      </div>
+
+      {%- comment -%} Social sharing {%- endcomment -%}
+      {%- if section.settings.show_share_buttons -%}
+        <div class="social-sharing">
+          <p>Share:</p>
+          <a
+            href="https://www.facebook.com/sharer.php?u={{ shop.url | append: product.url | url_encode }}"
+            target="_blank"
+            rel="noopener"
+            aria-label="Share on Facebook"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            Facebook
+          </a>
+          <a
+            href="https://twitter.com/intent/tweet?text={{ product.title | url_encode }}&url={{ shop.url | append: product.url | url_encode }}"
+            target="_blank"
+            rel="noopener"
+            aria-label="Share on Twitter"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+            Twitter
+          </a>
+          <a
+            href="https://pinterest.com/pin/create/button/?url={{ shop.url | append: product.url | url_encode }}&media={{ product.featured_image | image_url: width: 600 | url_encode }}&description={{ product.title | url_encode }}"
+            target="_blank"
+            rel="noopener"
+            aria-label="Share on Pinterest"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+            Pinterest
+          </a>
+        </div>
+      {%- endif -%}
+      
+
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'product-page.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Product Page",
+  "settings": [
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Media gallery position",
+      "options": [
+        { "value": "left",  "label": "Left"  },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share_buttons",
+      "label": "Show social sharing buttons",
+      "default": true
+    }
+  ],
+  "presets": [
+    { "name": "Product Page" }
+  ]
+}
+{% endschema %}
+{% comment %} 
 <script src="{{ 'product-page.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
@@ -112,4 +248,4 @@
     }
   ]
 }
-{% endschema %}
+{% endschema %} {% endcomment %}

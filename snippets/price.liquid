@@ -8,9 +8,6 @@
   {%- if product.compare_at_price > product.price %} price--on-sale{% endif -%}
   {%- if product.price_varies %} price--varies{% endif -%}"
 >
-  {%- if product.price_varies -%}
-    <span class="price__prefix">From</span>
-  {%- endif -%}
   <span class="price__amount">{{ product.price | money }}</span>
   
   {%- if product.compare_at_price > product.price -%}
