@@ -3,7 +3,6 @@
     <a href="{{ routes.root_url }}">{{ shop.name }}</a>
   </h2>
 
-<<<<<<< HEAD
   <div class="header__menu">
     {% for link in section.settings.menu.links %}
       {{ link.title | link_to: link.url }}
@@ -18,15 +17,6 @@
     </ul>
   </div>
   </div>
-=======
-  <nav class="header__nav">
-    <div class="header__menu">
-      {% for link in section.settings.menu.links %}
-        <a href="{{ link.url }}">{{ link.title }}</a>
-      {% endfor %}
-    </div>
-  </nav>
->>>>>>> main
 
   <div class="header__icons">
     <div class="header-search-toggle">
