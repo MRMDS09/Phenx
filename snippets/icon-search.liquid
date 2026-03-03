@@ -1,0 +1,33 @@
+{% doc %}
+  Renders a simple search (magnifying‑glass) icon.
+
+  @example
+  {% render 'icon-search' %}
+{% enddoc %}
+
+<svg
+  aria-hidden="true"
+  focusable="false"
+  role="img"
+  viewBox="0 0 24 24"
+  class="icon icon--search"
+>
+  <path
+    d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0
+       1.48-5.34C15.07 5.59 12.48 3 9.25 3S3.43 5.59
+       3.43 8.75 5.59 14.5 8.75 14.5c1.61 0 3.09-.59
+       4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6.75
+       0C7.01 14 5 11.99 5 8.75S7.01 3.5 9.25 3.5
+       13.5 5.51 13.5 8.75 11.49 14 8.75 14z"
+  />
+</svg>
+
+{% stylesheet %}
+  .icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+  }
+{% endstylesheet %}

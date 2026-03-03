@@ -3,14 +3,22 @@
   --icon-stroke-width: 1.5;
 }
 
+/* Update these existing classes */
 .header {
-  padding: 0 1rem;
-  height: 5rem;
+  padding: 0 5%; /* Wider padding */
+  height: 6rem; /* Slightly taller */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: var(--page-width);
+  max-width: 1440px; /* Wider container like XSHOP */
   margin: 0 auto;
+}
+
+.header__title a {
+  font-size: 2rem; /* Larger logo */
+  font-weight: 900; /* Extra bold for XSHOP style */
+  letter-spacing: -1.5px;
+  text-transform: uppercase;
 }
 
 .header a {
@@ -18,20 +26,57 @@
   color: var(--color-foreground);
 }
 
-.header__title a {
-  font-size: 1.5rem;
-  font-weight: bold;
+/* Replace your search classes with these */
+.header-search-form {
+  position: relative;
+  flex-grow: 1;
+  max-width: 400px; /* Constrain the search bar width */
+  margin: 0 2rem;
 }
 
+.header-search-input {
+  display: block !important; /* Always visible */
+  max-width: 100% !important; /* Full width of container */
+  width: 100%;
+  padding: 10px 20px 10px 45px; /* Space for search icon on left */
+  background: #f4f4f4; /* Light gray from XSHOP image */
+  border: none;
+  border-radius: 30px; /* The "Capsule" shape */
+  font-size: 0.9rem;
+  outline: none;
+  transition: background 0.3s ease;
+}
+
+.header-search-input:focus {
+  background: #ededed;
+}
+
+/* Position a search icon inside the bar */
+.header-search-button {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+  color: #888;
+  z-index: 2;
+}
+
+
 .header__nav {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
+  flex-grow: 0; /* Don't force center, let it sit next to logo */
+  margin-left: 3rem;
 }
 
 .header__menu {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem; /* More space between links */
+}
+
+.header__menu a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1a1a1a;
 }
 
 .header__icons {
@@ -51,19 +96,15 @@
 }
 
 .cart-count {
-  position: absolute;
-  top: -5px;
-  right: -8px;
-  background-color: #b87333;
-  color: white;
-  border-radius: 50%;
-  font-size: 0.7rem;
-  min-width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2px;
+  background-color: #000; /* Black instead of brown */
+  top: -2px;
+  right: -5px;
+  min-width: 16px;
+  height: 16px;
+}
+
+.header__icons {
+  gap: 1.5rem;
 }
 
 .header-search-toggle { display: inline-flex; align-items: center; gap: .5rem; }
@@ -82,12 +123,21 @@
 }
 
 .header-search-input {
-  display: none;
-  max-width: 0;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  transition: max-width 0.4s ease;
+  background: #f4f4f4;
+  border-radius: 50px;
+  border: none;
+  padding: 10px 20px 10px 45px;
+  width: 100%;
+}
+
+.search-submit-btn {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #888;
 }
 
 .header-search-input.visible {
