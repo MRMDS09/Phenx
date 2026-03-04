@@ -30,19 +30,34 @@
 .breadcrumbs { font-size: 0.9rem; opacity: 0.9; }
 .breadcrumbs a { color: #999999; text-decoration:underline; }
 
-/* Main Layout */
+/* Use Flex to put Sidebar and Main Content next to each other */
 .collection-main {
   display: flex;
-  gap: 40px;
+  gap: 40px; /* Space between sidebar and products */
+  align-items: flex-start;
+  margin-top: 40px;
 }
 
 .collection-sidebar {
-  width: 250px;
+  width: 280px; /* Fixed width for the filter area */
   flex-shrink: 0;
+  position: sticky;
+  top: 20px; /* Sidebar stays visible while scrolling products */
 }
 
 .collection-content {
-  flex-grow: 1;
+  flex-grow: 1; /* Product grid takes up the rest of the space */
+}
+
+/* Mobile Fix: Stack them again on small screens */
+@media (max-width: 990px) {
+  .collection-main {
+    flex-direction: column;
+  }
+  .collection-sidebar {
+    width: 100%;
+    position: static;
+  }
 }
 
 /* Sidebar Styling */
@@ -248,22 +263,113 @@
   font-size: 18px;
 }
 /* Sidebar Card Container */
+/* Container & Header */
 .filter-card {
-  background: #ffffff;
-  border: 1px solid #eeeeee;
-  border-radius: 24px; /* Matches image_d78025.png */
-  padding: 25px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #eee;
 }
 
 .filter-header {
   display: flex;
   justify-content: space-between;
-  font-size: 20px;
-  font-weight: 800;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #f0f0f0;
+  align-items: center;
+  margin-bottom: 20px;
   padding-bottom: 15px;
+  border-bottom: 2px solid #000;
+}
+
+.filter-header h2 { font-size: 18px; font-weight: 800; margin: 0; text-transform: uppercase; }
+.clear-all { font-size: 12px; color: #888; text-decoration: underline; }
+
+/* Accordion Logic (Details/Summary) */
+.sidebar-block {
+  border-bottom: 1px solid #f5f5f5;
+  padding: 15px 0;
+}
+
+.sidebar-title {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none; /* Hides default triangle */
+}
+.sidebar-title::-webkit-details-marker { display: none; } /* Hides triangle in Safari */
+
+/* Custom Plus/Minus Icon */
+.icon-plus-minus::before { content: '+'; font-size: 18px; font-weight: 400; }
+details[open] .icon-plus-minus::before { content: '−'; }
+
+/* Custom Checkboxes (Streetwear Style) */
+.custom-checkbox input[type="checkbox"] {
+  display: none; /* Hide the ugly default one */
+}
+
+.custom-checkbox label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+  margin-top: 10px;
+}
+
+.checkbox-box {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+/* Checked State */
+.custom-checkbox input[type="checkbox"]:checked + label .checkbox-box {
+  background: #000;
+  border-color: #000;
+}
+.custom-checkbox input[type="checkbox"]:checked + label .checkbox-box::after {
+  content: '✓';
+  color: #fff;
+  font-size: 12px;
+}
+.custom-checkbox input[type="checkbox"]:checked + label {
+  color: #000;
+  font-weight: 600;
+}
+
+/* Size Pills */
+.size-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+.size-pill input { display: none; }
+.size-pill span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.size-pill input:checked + span {
+  background: #000;
+  color: #fff;
+  border-color: #000;
 }
 
 /* Category List */
