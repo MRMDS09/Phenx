@@ -28,7 +28,7 @@
 }
 
 .breadcrumbs { font-size: 0.9rem; opacity: 0.9; }
-.breadcrumbs a { color: #fff; text-decoration: none; }
+.breadcrumbs a { color: #999999; text-decoration:underline; }
 
 /* Main Layout */
 .collection-main {
@@ -228,4 +228,170 @@
 
 .price-old {
   font-size: 13px;
+}
+
+/* 1. Main Filter Container */
+.filter-sidebar {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px; /* Rounded corners from image */
+  padding: 24px;
+  max-width: 300px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-weight: 800;
+  font-size: 18px;
+}
+/* Sidebar Card Container */
+.filter-card {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 24px; /* Matches image_d78025.png */
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 15px;
+}
+
+/* Category List */
+.sidebar-category-list { list-style: none; padding: 0; }
+.sidebar-category-list li {
+  border-bottom: 1px solid #f9f9f9;
+}
+.sidebar-category-list a {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 15px;
+}
+.chevron { color: #ccc; font-size: 20px; }
+
+/* Price Slider */
+.price-range {
+  width: 100%;
+  accent-color: #000; /* Black slider handle */
+  margin: 15px 0;
+}
+.price-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Color Swatches */
+.color-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+}
+.swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.swatch.gradient {
+  background: linear-gradient(45deg, #FF00FF, #00FF00, #00FFFF);
+}
+
+/* Reset Button (Capsule Shape) */
+.filter-reset-btn {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 40px;
+  font-weight: 700;
+  margin-top: 25px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+.filter-reset-btn:hover { opacity: 0.8; }
+/* 2. Category List with Arrows */
+.filter-group__summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.filter-group__summary::after {
+  content: '>'; /* The right arrow from image */
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* 3. Price Slider Styling */
+.price-range-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #000; /* Black line from image */
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+.price-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #000;
+  border-radius: 50%; /* Large black circle handle */
+  cursor: pointer;
+}
+
+/* 4. Circular Color Swatches */
+.color-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.swatch-input {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%; /* Perfect circles */
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.swatch-input:hover {
+  transform: scale(1.1);
+}
+
+/* 5. Reset Filter Button */
+.reset-filter-btn {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 15px;
+  border-radius: 50px; /* Capsule shape from image */
+  font-weight: 700;
+  margin-top: 30px;
+  cursor: pointer;
 }

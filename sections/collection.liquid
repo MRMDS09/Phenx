@@ -9,65 +9,125 @@
 
 <div class="collection-container">
   
-  <header class="collection-hero" {% if collection.image %}style="background-image: url('{{ collection.image | image_url: width: 2000 }}');"{% endif %}>
+  <header class="collection-hero" style="background-image: url('{% if section.settings.background_image %}{{ section.settings.background_image | image_url: width: 2000 }}{% else %}{{ 'photoCollection.jpeg' | asset_url }}{% endif %}');">
     <div class="hero-overlay">
       <div class="hero-content">
         <h1 class="hero-title">{{ collection.title }}</h1>
-        <nav class="breadcrumbs">
-          <a href="/">Home</a> / <span>{{ collection.title }}</span>
-        </nav>
+        <nav class="breadcrumb page-width" aria-label="breadcrumb">
+  <a href="/">Home</a>
+  <span aria-hidden="true">›</span>
+  {%- if collection -%}
+    <a href="{{ collection.url }}">{{ collection.title }}</a>
+    <span aria-hidden="true"></span>
+  {%- endif -%}
+  <span aria-current="page">{{ product.title }}</span>
+</nav>
       </div>
     </div>
   </header>
 
-  <div class="collection-main page-width">
-    <aside class="collection-sidebar">
-      <div class="sidebar-block">
-        <h3 class="sidebar-title">Category <span class="toggle-icon">▼</span></h3>
-        <ul class="sidebar-list">
-          <li><a href="#">Special Offers</a></li>
-          <li><a href="#">Performance</a></li>
-          <li><a href="#">T-shirts</a></li>
-          <li><a href="#">Underwear</a></li>
-          <li><a href="#">Top Brands</a></li>
-          <li><a href="#">Online Exclusive</a></li>
-        </ul>
+<aside class="collection-sidebar">
+  <div class="filter-card">
+    <div class="filter-header">
+      <span>Filters</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="10" y1="8" x2="14" y2="8"/><line x1="18" y1="16" x2="22" y2="16"/>
+      </svg>
+    </div>
+
+    <div class="sidebar-block">
+      <ul class="sidebar-category-list">
+        <li><a href="#">T-Shirt <span class="chevron">›</span></a></li>
+        <li><a href="#">Shoe <span class="chevron">›</span></a></li>
+        <li><a href="#">Trousers <span class="chevron">›</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-block">
+      <h3 class="sidebar-title">Price</h3>
+      <div class="price-slider-container">
+        <input type="range" min="0" max="500" value="500" class="price-range">
+        <div class="price-labels">
+          <span>$0</span>
+          <span>$500</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <h3 class="sidebar-title">Colors</h3>
+      <div class="color-swatch-grid">
+        <span class="swatch" style="background: #556B2F;"></span>
+        <span class="swatch" style="background: #E0F2FE;"></span>
+        <span class="swatch" style="background: #fff; border: 1px solid #ddd;"></span>
+        <span class="swatch" style="background: #000;"></span>
+        <span class="swatch" style="background: #FEF3C7;"></span>
+        <span class="swatch" style="background: #fff; border: 1px solid #ddd;"></span>
+        <span class="swatch" style="background: #FAF9F6; border: 1px solid #ddd;"></span>
+        <span class="swatch" style="background: #666;"></span>
+        <span class="swatch gradient"></span>
+      </div>
+    </div>
+
+    <button class="filter-reset-btn">Reset Filter</button>
+  </div>
+</aside>
+
+<aside class="collection-sidebar">
+  <form id="FacetFiltersForm">
+    <div class="filter-card">
+      <div class="filter-header">
+        <span>Filters</span>
       </div>
 
       <div class="sidebar-block">
-        <h3 class="sidebar-title">Availability <span class="toggle-icon">▼</span></h3>
+        <h3 class="sidebar-title">Availability</h3>
         <div class="sidebar-filter-item">
-          <input type="checkbox" id="in-stock">
-          <label for="in-stock">In stock ({{ collection.products_count }})</label>
-        </div>
-        <div class="sidebar-filter-item">
-          <input type="checkbox" id="out-of-stock">
-          <label for="out-of-stock">Out of stock (0)</label>
+          <input type="checkbox" name="filter.v.availability" value="1" id="in-stock">
+          <label for="in-stock">In stock</label>
         </div>
       </div>
-    </aside>
 
-    <main class="collection-content">
-      <div class="collection-toolbar">
-        <div class="toolbar-left">
-          <p class="results-count">There are {{ collection.products_count }} results in total</p>
+      <div class="sidebar-block">
+        <h3 class="sidebar-title">Price</h3>
+        <div class="price-slider-container">
+          <input type="range" name="filter.v.price.gte" min="0" max="500" value="0" class="price-range">
+          <input type="range" name="filter.v.price.lte" min="0" max="500" value="500" class="price-range">
         </div>
-        
-        <div class="toolbar-right">
-          <div class="view-options">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-          </div>
+      </div>
 
-          <div class="sort-wrapper">
-            <label for="sort-by">Sort by:</label>
-            <select name="sort_by" id="sort-by">
-              {%- for option in collection.sort_options -%}
-                <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
-              {%- endfor -%}
-            </select>
-          </div>
+      <button type="button" class="filter-reset-btn">Reset Filter</button>
+    </div>
+  </form>
+</aside>
+
+<main>
+    <div class="product-grid" style="--columns: {{ section.settings.columns }};">
+    <div class="filter-card">
+      <div class="filter-header">
+        <span>Filters</span>
+      </div>
+
+      <div class="sidebar-block">
+        <h3 class="sidebar-title">Availability</h3>
+        <div class="sidebar-filter-item">
+          <input type="checkbox" name="filter.v.availability" value="1" id="in-stock">
+          <label for="in-stock">In stock</label>
         </div>
+      </div>
+
+      <div class="sidebar-block">
+        <h3 class="sidebar-title">Price</h3>
+        <div class="price-slider-container">
+          <input type="range" name="filter.v.price.gte" min="0" max="500" value="0" class="price-range">
+          <input type="range" name="filter.v.price.lte" min="0" max="500" value="500" class="price-range">
+        </div>
+      </div>
+
+      <button type="button" class="filter-reset-btn">Reset Filter</button>
+    </div>
+  </form>
+
       </div>
 
       <div class="product-grid" style="--columns: {{ section.settings.columns }};">
@@ -81,7 +141,6 @@
       {%- endif -%}
     </main>
   </div>
-</div>
 {%- endpaginate -%}
 <script>
   document.getElementById('sort-by').addEventListener('change', function() {
@@ -121,4 +180,12 @@
     }
   ]
 }
-{% endschema %}
+
+{
+  "sections": {
+    "collection": {
+      "background_image": "Background image"
+    }
+  }
+}
+{%- endsection %}
