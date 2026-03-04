@@ -56,3 +56,19 @@
     menuToggle.setAttribute('aria-expanded', nav.classList.contains('active'));
   });
 })();
+document.addEventListener('DOMContentLoaded', function() {
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const menuClose = document.getElementById('mobile-menu-close');
+  const drawer = document.getElementById('mobile-menu-drawer');
+  const overlay = document.getElementById('drawer-overlay');
+
+  function toggleMenu() {
+    drawer.classList.toggle('is-active');
+    overlay.classList.toggle('is-active');
+    document.body.style.overflow = drawer.classList.contains('is-active') ? 'hidden' : '';
+  }
+
+  if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
+  if (menuClose) menuClose.addEventListener('click', toggleMenu);
+  if (overlay) overlay.addEventListener('click', toggleMenu);
+});

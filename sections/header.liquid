@@ -57,12 +57,40 @@
       </a>
 
       <button class="header__mobile-toggle" id="mobile-menu-toggle">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</button>
     </div>
   </div>
+  <div id="mobile-menu-drawer" class="mobile-menu-drawer">
+  <div class="drawer-header">
+    <h2 class="drawer-logo">{{ shop.name | upcase }}</h2>
+    <button id="mobile-menu-close" class="drawer-close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  
+  <nav class="drawer-nav">
+    <ul>
+      {% for link in section.settings.menu.links %}
+        <li>
+          <a href="{{ link.url }}" class="drawer-link">{{ link.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <div class="drawer-footer">
+    <a href="{{ routes.account_url }}" class="drawer-footer-link">My Account</a>
+    <div class="drawer-socials">
+      </div>
+  </div>
+</div>
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
 </header>
 {{ 'header.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'header.js' | asset_url }}" defer="defer"></script>
