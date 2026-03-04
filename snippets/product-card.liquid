@@ -6,27 +6,42 @@
 {%- endcomment -%}
 
 <div class="product-card">
-  <a href="{{ product.url | within: collection }}" class="product-card__image-link">
-    {%- if product.featured_image -%}
-      <img
-        src="{{ product.featured_image | image_url: width: 400 }}"
-        alt="{{ product.featured_image.alt | escape | default: product.title }}"
-        width="400"
-        height="{{ 400 | divided_by: product.featured_image.aspect_ratio | round }}"
-        loading="lazy"
-        class="product-card__image"
-      >
-    {%- else -%}
-      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+  <div class="product-card__image-container">
+    {%- comment -%} 1. ADDED: Sale Badge {%- endcomment -%}
+    {%- if product.compare_at_price > product.price -%}
+      {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+      <span class="badge-sale">-{{ savings }}%</span>
     {%- endif -%}
-  </a>
+
+    <a href="{{ product.url | within: collection }}" class="product-card__image-link">
+      {%- if product.featured_image -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 500, height: 500 }}"
+          alt="{{ product.featured_image.alt | escape }}"
+          width="500"
+          height="500"
+          class="product-card__image main-img"
+          loading="lazy"
+        >
+        {%- comment -%} 2. ADDED: Hover Image {%- endcomment -%}
+        {%- if product.images[1] != blank -%}
+          <img src="{{ product.images[1] | image_url: width: 500, height: 500 }}" alt="{{ product.images[1].alt | escape }}" width="500" height="500" class="product-card__image hover-img" loading="lazy">
+        {%- endif -%}
+      {%- endif -%}
+    </a>
+  </div>
+
   <div class="product-card__info">
-    {%- if show_vendor and product.vendor != blank -%}
-      <div class="product-card__vendor">{{ product.vendor }}</div>
+    {%- if product.vendor != blank -%}
+      {%- comment -%} 3. IMPROVED: Uppercase Vendor {%- endcomment -%}
+      <div class="product-card__vendor">{{ product.vendor | upcase }}</div>
     {%- endif -%}
-    <a href="{{ product.url | within: collection }}" class="product-card__title">{{ product.title }}</a>
+    
+    {%- comment -%} 4. IMPROVED: Bold Title {%- endcomment -%}
+    <a href="{{ product.url | within: collection }}" class="product-card__title"><strong>{{ product.title | upcase }}</strong></a>
+    
     <div class="product-card__price">
-      {%- render 'price', product: product -%}
+       {%- render 'price', product: product -%}
     </div>
   </div>
 </div>

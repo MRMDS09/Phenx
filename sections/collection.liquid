@@ -7,58 +7,82 @@
 
 {%- paginate collection.products by section.settings.products_per_page -%}
 
-<div class="collection-page page-width">
+<div class="collection-container">
   
-  <header class="collection-header">
-    {%- if section.settings.show_collection_image and collection.image -%}
-      <div class="collection-header__image">
-        <img
-          src="{{ collection.image | image_url: width: 1200 }}"
-          alt="{{ collection.image.alt | default: collection.title | escape }}"
-          width="1200"
-          height="{{ 1200 | divided_by: collection.image.aspect_ratio | round }}"
-        >
+  <header class="collection-hero" {% if collection.image %}style="background-image: url('{{ collection.image | image_url: width: 2000 }}');"{% endif %}>
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <h1 class="hero-title">{{ collection.title }}</h1>
+        <nav class="breadcrumbs">
+          <a href="/">Home</a> / <span>{{ collection.title }}</span>
+        </nav>
       </div>
-    {%- endif -%}
-    <div class="collection-header__info">
-      <h1>{{ collection.title }}</h1>
-      {%- if collection.description != blank -%}
-        <p>{{ collection.description }}</p>
-      {%- endif -%}
     </div>
   </header>
 
-  <div class="collection-toolbar">
-    <div class="collection-toolbar__sort">
-      <label for="sort-by">Sort by:</label>
-      <select name="sort_by" id="sort-by" data-default-sort="{{ collection.default_sort_by }}">
-        {%- for option in collection.sort_options -%}
-          <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected="selected"{% endif %}>
-            {{ option.name }}
-          </option>
+  <div class="collection-main page-width">
+    <aside class="collection-sidebar">
+      <div class="sidebar-block">
+        <h3 class="sidebar-title">Category <span class="toggle-icon">▼</span></h3>
+        <ul class="sidebar-list">
+          <li><a href="#">Special Offers</a></li>
+          <li><a href="#">Performance</a></li>
+          <li><a href="#">T-shirts</a></li>
+          <li><a href="#">Underwear</a></li>
+          <li><a href="#">Top Brands</a></li>
+          <li><a href="#">Online Exclusive</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-block">
+        <h3 class="sidebar-title">Availability <span class="toggle-icon">▼</span></h3>
+        <div class="sidebar-filter-item">
+          <input type="checkbox" id="in-stock">
+          <label for="in-stock">In stock ({{ collection.products_count }})</label>
+        </div>
+        <div class="sidebar-filter-item">
+          <input type="checkbox" id="out-of-stock">
+          <label for="out-of-stock">Out of stock (0)</label>
+        </div>
+      </div>
+    </aside>
+
+    <main class="collection-content">
+      <div class="collection-toolbar">
+        <div class="toolbar-left">
+          <p class="results-count">There are {{ collection.products_count }} results in total</p>
+        </div>
+        
+        <div class="toolbar-right">
+          <div class="view-options">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </div>
+
+          <div class="sort-wrapper">
+            <label for="sort-by">Sort by:</label>
+            <select name="sort_by" id="sort-by">
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-grid" style="--columns: {{ section.settings.columns }};">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
         {%- endfor -%}
-      </select>
-    </div>
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <div class="pagination">{{ paginate | default_pagination }}</div>
+      {%- endif -%}
+    </main>
   </div>
-
-  <div class="collection-grid" style="--columns: {{ section.settings.columns }};">
-    {%- for product in collection.products -%}
-      {% render 'product-card', product: product %}
-    {%- else -%}
-      <p>No products found in this collection.</p>
-    {%- endfor -%}
-  </div>
-
-  {%- if paginate.pages > 1 -%}
-    <div class="pagination">
-      {{ paginate | default_pagination }}
-    </div>
-  {%- endif -%}
-
 </div>
-
 {%- endpaginate -%}
-
 <script>
   document.getElementById('sort-by').addEventListener('change', function() {
     const url = new URL(window.location.href);

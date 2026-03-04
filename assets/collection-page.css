@@ -1,87 +1,231 @@
-.collection-page {
-  padding: 50px 0;
+/* Hero Banner */
+.collection-hero {
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
 }
 
-.collection-header {
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.collection-header__image {
-  margin-bottom: 20px;
-  max-height: 400px;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-.collection-header__image img {
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.3); /* Darkens image to make text pop */
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.collection-header__info h1 {
-  font-size: 2.5rem;
+.hero-title {
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
   margin-bottom: 10px;
 }
 
+.breadcrumbs { font-size: 0.9rem; opacity: 0.9; }
+.breadcrumbs a { color: #fff; text-decoration: none; }
+
+/* Main Layout */
+.collection-main {
+  display: flex;
+  gap: 40px;
+}
+
+.collection-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+.collection-content {
+  flex-grow: 1;
+}
+
+/* Sidebar Styling */
+.sidebar-block {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+.sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.sidebar-list { list-style: none; padding: 0; }
+.sidebar-list li { margin-bottom: 10px; }
+.sidebar-list a { text-decoration: none; color: #666; font-size: 0.95rem; }
+
+/* Toolbar */
 .collection-toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
   margin-bottom: 30px;
 }
 
-.collection-toolbar__sort {
+.results-count { color: #888; font-size: 0.9rem; }
+
+.toolbar-right { display: flex; align-items: center; gap: 20px; }
+
+.view-options { display: flex; gap: 10px; color: #333; }
+
+/* Product Card Container */
+.product-card {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Image Wrapper with Hover Effect */
+.product-card__image-wrapper {
+  position: relative;
+  background: #f9f9f9;
+  border-radius: 15px; /* Rounded look from Umino */
+  overflow: hidden;
+  aspect-ratio: 1 / 1.2;
+}
+
+.product-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.hover-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.product-card:hover .hover-img {
+  opacity: 1;
+}
+
+/* Badges (The Red Pill from XSHOP) */
+.badge-sale {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #ff4d4d; /* Bright red */
+  color: white;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 800;
+  z-index: 2;
+}
+
+/* Info Styling */
+.product-card__info {
+  padding: 15px 0;
+  text-align: left;
+}
+
+.product-card__vendor {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+}
+
+.product-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+/* Price Styling (Reference image_12411e.png) */
+.product-card__price {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.collection-toolbar__sort select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.price-current {
+  font-weight: 800;
+  font-size: 16px;
+  color: #000;
 }
 
-.collection-grid {
+.price-old {
+  color: #9ca3af;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+/* Ensure the grid spreads out correctly */
+.product-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Mobile default */
-  gap: 20px;
+  /* Uses the column setting from your schema, or 4 by default */
+  grid-template-columns: repeat(var(--columns, 4), 1fr); 
+  gap: 30px 20px; /* Space between cards: 30px vertical, 20px horizontal */
+  margin-top: 20px;
 }
 
-@media (min-width: 768px) {
-  .collection-grid {
-    grid-template-columns: repeat(var(--columns, 3), 1fr);
+/* On medium screens (Tablets), show 3 columns */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
   }
 }
 
-@media (min-width: 1024px) {
-  .collection-grid {
-    grid-template-columns: repeat(var(--columns, 4), 1fr);
+/* On Mobile, show 2 columns (XSHOP look) instead of 1 big card */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  /* Shrink text for mobile so it fits in small cards */
+  .product-card__title {
+    font-size: 12px !important;
+  }
+  .price-current {
+    font-size: 14px !important;
   }
 }
-
-.pagination {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
+/* Make the image container slightly shorter */
+.product-card__image-container, 
+.product-card__image-wrapper {
+  aspect-ratio: 1 / 1.2; /* This keeps them in a nice streetwear portrait shape */
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
 
-.pagination a, .pagination span {
-  padding: 8px 12px;
-  margin: 0 2px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  text-decoration: none;
-  color: #333;
+/* Reduce Title Size */
+.product-card__title {
+  font-size: 13px; /* Smaller font makes the design look "cleaner" */
+  line-height: 1.2;
+  margin-bottom: 5px;
+  display: block;
+  font-weight: 700;
 }
 
-.pagination .current {
-  background-color: #b87333;
-  color: white;
-  border-color: #b87333;
+/* Reduce Price Size */
+.price-current {
+  font-size: 15px;
+  font-weight: 800;
 }
 
-.pagination a:hover {
-  background-color: #f0f0f0;
+.price-old {
+  font-size: 13px;
 }
