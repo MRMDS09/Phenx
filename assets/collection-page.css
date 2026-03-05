@@ -35,8 +35,7 @@
   display: flex;
   gap: 40px; /* Space between sidebar and products */
   align-items: flex-start;
-  margin-top: 40px;
-}
+} 
 
 .collection-sidebar {
   width: 280px; /* Fixed width for the filter area */

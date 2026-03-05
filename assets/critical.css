@@ -170,7 +170,7 @@ body {
 }
 
 /* ── Page Layout ────────────────────────── */
-.page-width { max-width: 1360px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 2.5rem); }
+.page-width { max-width: 100% !important; padding: 0 40px; }
 
 .product-page {
   padding: clamp(2rem, 6vw, 5rem) 0 clamp(3rem, 8vw, 7rem);

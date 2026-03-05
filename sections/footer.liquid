@@ -4,53 +4,67 @@
 {%- endcomment -%}
 
 {{ 'footer.css' | asset_url | stylesheet_tag }}
-
-<footer class="site-footer">
-  <div class="footer-grid page-width">
-    {%- for block in section.blocks -%}
-      <div class="footer-grid__item" {{ block.shopify_attributes }}>
-        {%- case block.type -%}
-          {%- when 'link_list' -%}
-            <h3 class="footer-grid__item-title">{{ block.settings.heading | escape }}</h3>
-            <ul class="footer-links">
-              {%- for link in block.settings.menu.links -%}
-                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-              {%- endfor -%}
-            </ul>
-          {%- when 'brand_info' -%}
-            <div class="brand-info">
-              {%- if block.settings.show_logo -%}
-                <h3 class="footer-grid__item-title">{{ shop.name }}</h3>
-              {%- endif -%}
-              <p>{{ block.settings.brand_description }}</p>
-              <div class="social-icons">
-                {%- if block.settings.social_twitter != blank -%}
-                  <a href="{{ block.settings.social_twitter }}">Twitter</a>
-                {%- endif -%}
-                {%- if block.settings.social_facebook != blank -%}
-                  <a href="{{ block.settings.social_facebook }}">Facebook</a>
-                {%- endif -%}
-                {%- if block.settings.social_instagram != blank -%}
-                  <a href="{{ block.settings.social_instagram }}">Instagram</a>
-                {%- endif -%}
-              </div>
-            </div>
-        {%- endcase -%}
+<footer class="footer-umino">
+  <div class="page-width">
+    <div class="footer-top-grid">
+      
+      <div class="footer-column brand-info">
+        <h2 class="footer-logo">Phenix</h2>
+        <p>Oujda, Morocco</p>
+        <p>+212-6800-2628</p>
+        <p>phenix@gmail.com</p>
+        <div class="footer-socials">
+          <a href="#"><i class="icon-instagram"></i></a>
+          <a href="#"><i class="icon-tiktok"></i></a>
+          <a href="#"><i class="icon-youtube"></i></a>
+          <a href="#"><i class="icon-x"></i></a>
+        </div>
       </div>
-    {%- endfor -%}
-  </div>
 
-  <div class="footer-bottom page-width">
-    <div class="footer-bottom__copyright">
-      &copy; {{ 'now' | date: '%Y' }}, {{ shop.name }} | {{ powered_by_link }}
+      <div class="footer-column">
+        <h3 class="footer-title">COMPANY</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Stores</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Size Guide</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3 class="footer-title">CUSTOMER SERVICE</h3>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Shipping & Return</a></li>
+          <li><a href="#">Term & Conditions</a></li>
+          <li><a href="#">Store Locations</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column newsletter-col">
+        <h3 class="footer-title">SIGN UP TO NEWSLETTER</h3>
+        <p>Enter your email address to get $10 off your first order and free shipping.</p>
+        <form class="footer-newsletter-form">
+          <input type="email" placeholder="Enter your email..." required>
+          <button type="submit">SUBSCRIBE</button>
+        </form>
+      </div>
+
     </div>
-    {%- if section.settings.show_payment_icons -%}
-      <div class="footer-bottom__payment-icons">
-        {%- for type in shop.enabled_payment_types -%}
-          {{ type | payment_type_svg_tag: class: 'payment-icon' }}
-        {%- endfor -%}
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-left">
+        
+        <span>Morooco (MAD )</span>
       </div>
-    {%- endif -%}
+      <div class="footer-copyright">
+        © {{- 'now' | date: ' %Y ' -}}  - Phenix Store. All Rights Reserved
+      </div>
+      <div class="footer-payment-icons">
+        <img src="{{ 'visa.png' | asset_url }}" alt="Visa" width="40" height="24">
+        <img src="{{ 'mastercard.png' | asset_url }}" alt="Mastercard" width="40" height="24">
+      </div>
+    </div>
   </div>
 </footer>
 
