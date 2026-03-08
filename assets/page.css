@@ -1,3 +1,94 @@
+/* page index or hello-word  */
+.phenex-hero {
+  position: relative;
+  min-height: 100vh;           /* Hauteur pleine page, fixe */
+  height: 100vh;                /* Alternative si vous voulez une hauteur exacte */
+  background-size: cover;
+  background-position: center; /* ou 'center center' pour un centrage parfait */
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-start;      /* Colle le contenu en haut */
+  justify-content: flex-start;  /* Alignement à gauche */
+  padding: 10vh 8% 0;           /* Espace en haut : 10% de la hauteur de l'écran */
+  overflow: hidden;
+  margin: 0;
+  width: 100vw;
+margin-left: calc(-50vw + 50%);
+}
+
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3); /* noir à 30% d'opacité, plus léger */
+  z-index: 1;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+}
+
+
+
+.hero-logo {
+  width: 33%;
+  height: auto;
+}
+
+.hero-left {
+  max-width: 600px;
+  margin-top: 5vh; /* si besoin d'un réglage fin */
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  margin: 2vh 0;
+}
+
+.hero-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  background-color: #b87333;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.hero-btn:hover {
+  background-color: #d18b47;
+  transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+  @media (max-width: 768px) {
+  .phenex-hero {
+    padding: 5vh 5% 0; /* moins d'espace en haut sur mobile */
+    background-position: center;
+    text-align: center;
+  }
+
+  .hero-left {
+    margin: 0 auto;
+  }
+
+  .hero-logo {
+    margin: 0 auto 2vh auto;
+    width: 50%; /* logo plus gros si nécessaire */
+  }
+}
+}
+
 .page-container {
   padding: 50px 0;
 }

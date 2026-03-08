@@ -1,10 +1,10 @@
-{% stylesheet %}
 .welcome {
-  {% if section.settings.header_image != blank %}
-  background-image: url({{ section.settings.header_image | image_url: width: 2000 }});
-  {% endif %}
+  /* the background-image is controlled by the section, not the asset */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-{% endstylesheet %}
+
 
 
   .welcome-content {

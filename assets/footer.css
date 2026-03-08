@@ -5,6 +5,8 @@
   font-family: Arial, sans-serif;
 }
 
+
+
 .footer-top-grid {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 2fr;

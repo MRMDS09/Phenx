@@ -172,6 +172,11 @@ body {
 /* ── Page Layout ────────────────────────── */
 .page-width { max-width: 100% !important; padding: 0 40px; }
 
+/* assets/footer.css (or critical.css) */
+.footer-umino .page-width {
+  padding: 0;                /* remove the 40px gutter */
+  max-width: 100%;           /* keep full‑width if you removed the wrapper */
+}
 .product-page {
   padding: clamp(2rem, 6vw, 5rem) 0 clamp(3rem, 8vw, 7rem);
   opacity: 0;
