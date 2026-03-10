@@ -1,26 +1,31 @@
 /* page index or hello-word  */
+/* --- HERO SECTION EDGE-TO-EDGE --- */
+
 .phenex-hero {
   position: relative;
-  min-height: 100vh;           /* Hauteur pleine page, fixe */
-  height: 100vh;                /* Alternative si vous voulez une hauteur exacte */
+  min-height: 100vh;
+  height: 100vh;
   background-size: cover;
-  background-position: center; /* ou 'center center' pour un centrage parfait */
+  background-position: center;
   background-repeat: no-repeat;
   display: flex;
-  align-items: flex-start;      /* Colle le contenu en haut */
-  justify-content: flex-start;  /* Alignement à gauche */
-  padding: 10vh 8% 0;           /* Espace en haut : 10% de la hauteur de l'écran */
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 10vh 8% 0;
   overflow: hidden;
-  margin: 0;
+  
+  /* EDGE-TO-EDGE MAGIC */
   width: 100vw;
-margin-left: calc(-50vw + 50%);
+  margin-left: calc(-50vw + 50%);
+  
+  /* Ensure text is visible */
+  color: #ffffff; 
 }
-
 
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.3); /* noir à 30% d'opacité, plus léger */
+  background: rgba(0, 0, 0, 0.4); /* Slightly darker for better text contrast */
   z-index: 1;
 }
 
@@ -28,54 +33,71 @@ margin-left: calc(-50vw + 50%);
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1200px; /* Content stays centered, but bg goes edge-to-edge */
+  margin: 0 auto;    /* Centers the content box */
 }
 
-
-
 .hero-logo {
-  width: 33%;
+  width: 120px;      /* Fixed size looks better than % */
   height: auto;
+  display: block;
+  margin-bottom: 20px;
+  object-fit: contain;
 }
 
 .hero-left {
   max-width: 600px;
-  margin-top: 5vh; /* si besoin d'un réglage fin */
+  margin-top: 5vh;
 }
 
 .hero-title {
   font-size: clamp(2.5rem, 6vw, 5rem);
-  line-height: 1.2;
+  line-height: 1.1;
+  color: #ffffff;    /* White text */
+  font-weight: 700;
   word-break: break-word;
+  margin: 0 0 20px 0;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .hero-subtitle {
   font-size: clamp(1rem, 2.5vw, 1.2rem);
-  margin: 2vh 0;
+  color: #f0f0f0;    /* Off-white text */
+  margin: 0 0 30px 0;
+  line-height: 1.6;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .hero-btn {
   display: inline-block;
-  padding: 14px 40px;
+  padding: 16px 48px;
   background-color: #b87333;
   color: #fff;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
   letter-spacing: 1px;
+  border-radius: 4px; /* Slight rounded corners */
+  text-transform: uppercase;
+  font-size: 14px;
 }
 
 .hero-btn:hover {
   background-color: #d18b47;
   transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
+/* Mobile Fixes */
 @media (max-width: 768px) {
-  @media (max-width: 768px) {
   .phenex-hero {
-    padding: 5vh 5% 0; /* moins d'espace en haut sur mobile */
-    background-position: center;
+    padding: 100px 5% 0; /* Adjust top padding for mobile header */
+    background-position: center 30%; /* Focus image on subject */
     text-align: center;
+    justify-content: center; /* Center flex items */
+    align-items: center;     /* Vertically center */
+    height: auto;
+    min-height: 80vh;
   }
 
   .hero-left {
@@ -83,10 +105,14 @@ margin-left: calc(-50vw + 50%);
   }
 
   .hero-logo {
-    margin: 0 auto 2vh auto;
-    width: 50%; /* logo plus gros si nécessaire */
+    margin: 0 auto 20px auto;
   }
-}
+  
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .page-container {
