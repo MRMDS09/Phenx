@@ -1,7 +1,7 @@
 {
   "sections": {
     "hero_section": {
-      "type": "hello-world",
+      "type": "hero-section",
       "settings": {
         "header_image": "",
         "logo": "",

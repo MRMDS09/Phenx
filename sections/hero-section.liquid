@@ -1,0 +1,63 @@
+<section
+  class="relative w-full min-h-[85vh] flex items-center justify-start overflow-hidden"
+  style="background-image: url('{{ 'hero-bg.jpg' | asset_url }}'); background-size: cover; background-position: center;"
+>
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 px-6 md:px-[8%] w-full max-w-[1400px]">
+    <div class="max-w-[650px]">
+      <h1 class="font-display text-6xl md:text-8xl font-extrabold tracking-tight text-foreground opacity-0 animate-fade-up drop-shadow-lg">
+        PHENEX
+      </h1>
+      <p class="text-lg md:text-xl text-secondary-foreground mt-4 mb-8 font-light opacity-0 animate-fade-up-delay drop-shadow-md">
+        Streetwear meets modern minimalism.
+      </p>
+      <a
+        href="#products"
+        class="inline-flex items-center gap-2 bg-primary text-primary-foreground px-10 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-foreground hover:text-background transition-all duration-400 shadow-lg opacity-0 animate-fade-up-delay-2"
+      >
+        Shop Collection
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom marquee -->
+  <div class="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm py-3 overflow-hidden">
+    <div class="flex animate-marquee whitespace-nowrap">
+      <span class="text-xs tracking-[0.3em] uppercase text-muted-foreground mx-8">
+        PHENIX — 2024 COLLECTION | ELEVATE YOUR STYLE — PHENIX — 2024 COLLECTION | ELEVATE YOUR STYLE — PHENIX — 2024 COLLECTION | ELEVATE YOUR STYLE —
+      </span>
+      <span class="text-xs tracking-[0.3em] uppercase text-muted-foreground mx-8">
+        PHENIX — 2024 COLLECTION | ELEVATE YOUR STYLE — PHENIX — 2024 COLLECTION | ELEVATE YOUR STYLE — PHENIX — 2024 COLLECTION | ELEVATE YOUR STYLE —
+      </span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "PHENEX"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Streetwear meets modern minimalism."
+    }
+  ]
+}
+{% endschema %}
